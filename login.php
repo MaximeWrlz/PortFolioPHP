@@ -2,7 +2,7 @@
 
 <?php
 session_start();
-include_once("code.php");
+include_once("php/code.php");
 
 $user = new Users;
 if (isset($_SESSION["account"])){
