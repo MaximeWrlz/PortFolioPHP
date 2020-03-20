@@ -31,18 +31,22 @@ if(isset($_POST["login"]))
 if (isset($_POST['signin'])) {
     if ($_POST["signin"] === "OK") {
         if ($_POST['uname'] != NULL && $_POST['mail'] != NULL && $_POST['mailconfirm'] != NULL && $_POST['psw'] != NULL && $_POST['pswconfirm'] != NULL) {
-            if ($_POST['mail'] == $_POST['mailconfirm']) {
-                $mailcheck = $user->inscription_check($_POST['mail']);
-                if ($mailcheck == 0) {
-                    if ($_POST['psw'] == $_POST['pswconfirm']) {
-                        $password = password_hash($_POST['psw'], PASSWORD_DEFAULT);
-                        $user->inscription($_POST['uname'], $_POST['mail'], $password);
+            $unamecheck = $user->inscription_checkuser($_POST['uname']);
+            if ($unamecheck == 0) {
+                if ($_POST['mail'] == $_POST['mailconfirm']) {
+                    $mailcheck = $user->inscription_checkmail($_POST['mail']);
+                    if ($mailcheck == 0) {
+                        if ($_POST['psw'] == $_POST['pswconfirm']) {
+                            $password = password_hash($_POST['psw'], PASSWORD_DEFAULT);
+                            $user->inscription($_POST['uname'], $_POST['mail'], $password);
+                        }
+                        else {echo("les mdp ne sont pas identiques");}
                     }
-                    else {echo("les mdp ne sont pas identiques");}
+                    else {echo("Il exite déjà un compte avec cette adresse mail");}
                 }
-                else {echo("Il exite déjà un compte avec cette adresse mail");}
+                else {echo("Les mails ne sont pas identiques");}
             }
-            else {echo("Les mails ne sont pas identiques");}
+            else {echo("Ce pseudo est déjà utilisé");}
         }
     }
 }
@@ -51,10 +55,10 @@ if (isset($_POST['signin'])) {
 ?>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
